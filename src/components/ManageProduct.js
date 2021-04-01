@@ -52,7 +52,7 @@ const ManageProduct = () => {
     const { tableHeading, editBtn, deleteBtn,tableContainer,title } = useStyles();
     const [juices, setJuices] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:4000/juices')
+        axios.get('https://banana-tart-95567.herokuapp.com/juices')
             .then(res => {
                 // console.log(res.data);
                 setJuices(res.data)
@@ -62,15 +62,7 @@ const ManageProduct = () => {
             })
     }, []);
     const deleteJuice = (id, e) => {
-        // fetch(`http://localhost:4000/delete/${id}`,{
-        //     method:'DELETE',
-        // })
-        // .then(res => {
-        //     console.log(res);
-        // })
-        // console.log(e.target.parentElement.parentElement.parentElement);
-        console.log(e.target.tagName);
-        axios.delete(`http://localhost:4000/delete/${id}`)
+        axios.delete(`https://banana-tart-95567.herokuapp.com/delete/${id}`)
         .then(res => {
             if(res.data){
                 if(e.target.tagName === 'svg'){
@@ -82,7 +74,6 @@ const ManageProduct = () => {
             }
                 
         })
-        // console.log(id);
     }
     return (
         <div>

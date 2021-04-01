@@ -2,6 +2,7 @@ import { Button, Container, Grid, Input, makeStyles, Paper, TextField } from '@m
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
+import Loader from './Loader';
 import Sidebar from './Sidebar';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
 const AddProduct = () => {
   const {root,fieldLabel, fieldItem} = useStyles();
   const [imageURL, setImageURL] = useState('');
+  // const [disable, setDisable] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { register, handleSubmit, watch, errors } = useForm();
   const handleImageUpload = event => {
     // console.log(event.target.files[0]);
@@ -36,11 +39,12 @@ const AddProduct = () => {
     imageData.set('key', 'f722e3d0ff6c21590defd11ada10cc8b');
     imageData.append('image', event.target.files[0])
     axios.post('https://api.imgbb.com/1/upload', imageData)
-      .then(function (response) {
+      .then(response=> {
         setImageURL(response.data.data.display_url);
+        setLoading(false)
       })
-      .catch(function (error) {
-        // console.log(error);
+      .catch(err =>  {
+        // console.log(err);
       });
   }
   const onSubmit = (data, e) => {
@@ -49,10 +53,12 @@ const AddProduct = () => {
       price: data.price,
       imageURL: imageURL
     }
-    axios.post('http://localhost:4000/addJuice', juiceData)
+    setLoading(true);
+    axios.post('https://banana-tart-95567.herokuapp.com/addJuice', juiceData)
       .then(res => {
         console.log(res.data);
         res.data && e.target.reset();
+        setLoading(false)
       })
       .catch(err => {
         // console.log(err);
@@ -75,9 +81,15 @@ const AddProduct = () => {
           </div>
           <div>
             <label className={fieldLabel} htmlFor="imageURL">Add Photo</label>
-            <input className={fieldItem} type="file" name="imageURL" onChange={handleImageUpload} />
+            <input className={fieldItem} type="file" name="imageURL" 
+            onChange={(e)=> {
+            handleImageUpload(e);
+            setLoading(true);
+            }} />
+            {loading && <Loader/>}
           </div>
-          <Button type="submit" variant="contained" color="primary">Save</Button>
+          <Button type="submit" disabled={loading} variant="contained" color="primary">Save</Button>
+          {loading && <Loader/>}
         </form>
         </Paper>
       </Container>

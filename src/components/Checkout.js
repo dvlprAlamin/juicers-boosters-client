@@ -1,4 +1,4 @@
-import { Container, makeStyles, Table, TableBody, TableCell, TableHead, Typography } from '@material-ui/core';
+import { Button, Container, makeStyles, Table, TableBody, TableCell, TableHead, Typography } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { GetContext } from '../context';
@@ -15,7 +15,7 @@ const Checkout = () => {
     console.log(checkoutJuiceId);
     const [checkoutJuice, setCheckoutJuice] = useState({})
     useEffect(()=> {
-        axios.get(`http://localhost:4000/juices/${checkoutJuiceId}`)
+        axios.get(`https://banana-tart-95567.herokuapp.com/juices/${checkoutJuiceId}`)
             .then(res=> {
                 // console.log(res.data[0]);
                 setCheckoutJuice(res.data[0])
@@ -42,6 +42,9 @@ const Checkout = () => {
                     <TableCell>${checkoutJuice.price}</TableCell>
                 </TableBody>
             </Table>
+            <div style={{textAlign:'right', marginTop:30}}>
+            <Button variant="contained" color="primary" >Checkout</Button>
+            </div>
         </Container>
     );
 };

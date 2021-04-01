@@ -3,15 +3,18 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { GetContext } from '../context';
+import Loader from './Loader';
 
 const Home = () => {
     const {setCheckoutJuiceId} = GetContext();
     const [juices, setJuices] = useState([]);
+    const [loading , setLoading] = useState(true);
     useEffect(() => {
-        axios.get('http://localhost:4000/juices')
+        axios.get('https://banana-tart-95567.herokuapp.com/juices')
             .then(res=> {
                 // console.log(res.data);
                 setJuices(res.data)
+                setLoading(false);
             })
             .catch(err=> {
                 console.log(err);
@@ -20,7 +23,7 @@ const Home = () => {
     return (
         <Container>
             <Grid container spacing={5} justify="center">
-                {
+                {   loading ? <Loader /> :
                     juices.map(juice => (
                         <Grid item lg={4} md={6} sm={12} key={juice._id} >
                             <Paper style={{maxWidth:300 , margin:'auto',overflow:'hidden'}}>

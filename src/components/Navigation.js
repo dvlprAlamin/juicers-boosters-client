@@ -26,7 +26,7 @@ const headersData = [
     },
     {
         label: "Admin",
-        href: "/admin",
+        href: "/addProduct",
     },
     {
         label: "Deals",

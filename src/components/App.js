@@ -22,7 +22,6 @@ const App = () => {
           <Route exact path="/" component={Home}/>
           <Route path="/orders" component={Orders}/>
           <Route path="/checkout" component={Checkout}/>
-          <Route path="/admin" component={AddProduct}/>
           <Route path='/addProduct' component={AddProduct}/>
           <Route path='/manageProduct' component={ManageProduct}/>
         </Switch>
