@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Checkout = () => {
     const {tableHeading} = useStyles();
-    const {checkoutJuiceId} = GetContext();
+    const {checkoutJuiceId, loggedInUser} = GetContext();
     console.log(checkoutJuiceId);
     const [checkoutJuice, setCheckoutJuice] = useState({})
     useEffect(()=> {
@@ -24,6 +24,24 @@ const Checkout = () => {
                 console.log(err);
             })
     }, [checkoutJuiceId])
+
+    const checkoutHandler = () => {
+        const orderData = {
+            email:loggedInUser.email,
+            name:checkoutJuice.name,
+            quantity:1,
+            price:checkoutJuice.price,
+            date: new Date(),
+        }
+        axios.post('https://banana-tart-95567.herokuapp.com/order', orderData)
+      .then(res => {
+        console.log(res.data);
+        // setLoading(false)
+      })
+      .catch(err => {
+        // console.log(err);
+      });
+    }
     return (
         <Container>
             
@@ -32,18 +50,18 @@ const Checkout = () => {
             {/* {<h2>Price: ${checkoutJuice.price}</h2>} */}
             <Table>
                 <TableHead>
-                    <TableCell className={tableHeading}>Name</TableCell>
-                    <TableCell className={tableHeading}>Quantity</TableCell>
-                    <TableCell className={tableHeading}>Price</TableCell>
+                    <TableCell className={tableHeading}>Juice Name</TableCell>
+                    <TableCell className={tableHeading} align="center">Quantity</TableCell>
+                    <TableCell className={tableHeading} align="right">Price</TableCell>
                 </TableHead>
                 <TableBody>
                     <TableCell>{checkoutJuice.name}</TableCell>
-                    <TableCell>1</TableCell>
-                    <TableCell>${checkoutJuice.price}</TableCell>
+                    <TableCell align="center">1</TableCell>
+                    <TableCell align="right">${checkoutJuice.price}</TableCell>
                 </TableBody>
             </Table>
             <div style={{textAlign:'right', marginTop:30}}>
-            <Button variant="contained" color="primary" >Checkout</Button>
+            <Button onClick={checkoutHandler} variant="contained" color="primary" >Checkout</Button>
             </div>
         </Container>
     );

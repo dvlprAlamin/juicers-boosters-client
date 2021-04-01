@@ -11,9 +11,11 @@ import {
     Drawer,
     Link,
     MenuItem,
+    Avatar,
 } from "@material-ui/core";
 import React, { useState, useEffect, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { GetContext } from '../context';
 
 const headersData = [
     {
@@ -48,11 +50,30 @@ const useStyles = makeStyles(() => ({
     loginBtn:{
         textDecoration:'none',
         color:'inherit'
+    },
+    logoutBtn:{
+        textDecoration:'none',
+        color:'inherit',
+        marginRight:40
+    },
+    userAvatar:{
+        position:'absolute',
+        top:12,
+        right:12
     }
 }));
 
 export default function Navigation() {
-    const { menuButton, toolbar, drawerContainer,loginBtn } = useStyles();
+    const {loggedInUser , logOut} = GetContext();
+    const logOutHandler = async e => {
+        try {
+            await logOut();
+        }catch(err){
+            console.log(err);
+        }
+    }
+    // console.log(loggedInUser);
+    const { menuButton, toolbar, drawerContainer,loginBtn,logoutBtn,userAvatar } = useStyles();
 
     const [state, setState] = useState({
         mobileView: false,
@@ -133,12 +154,19 @@ export default function Navigation() {
                         >
                             <MenuItem>{label}</MenuItem>
                         </Link>)}
-                {/* {loggedInUser.email ? 
-          <Typography variant="body1" style={{fontWeight:700}}>
-            {loggedInUser.displayName}</Typography> : 
+                        
+                {loggedInUser && 
+                <Avatar alt={loggedInUser.displayName} src={loggedInUser.photoURL} />}
+                {loggedInUser ? 
+                <RouterLink 
+                onClick={logOutHandler}
+                className={logoutBtn} 
+                to="/login">
+              <Button variant="outlined" color="inherit">
+                Logout</Button></RouterLink> :
             <RouterLink className={loginBtn} to="/login">
               <Button variant="outlined" color="inherit">
-                Login</Button></RouterLink>} */}
+                Login</Button></RouterLink>}
             </>
         )
     };
@@ -165,12 +193,17 @@ export default function Navigation() {
                         {label}
                     </Button>
                 ))}
-                {/* {loggedInUser.email ? 
-          <Typography variant="body1" style={{fontWeight:700,display:'inline-block'}}>
-            {loggedInUser.displayName}</Typography> : 
+                {loggedInUser && 
+                <Avatar className={userAvatar} alt={loggedInUser.displayName} src={loggedInUser.photoURL} />}
+                {loggedInUser ? 
+                <RouterLink 
+                onClick={logOutHandler}
+                className={logoutBtn} to="/login">
+              <Button variant="outlined" color="inherit">
+                Logout</Button></RouterLink> :
             <RouterLink className={loginBtn} to="/login">
               <Button variant="outlined" color="inherit">
-                Login</Button></RouterLink>} */}
+                Login</Button></RouterLink>}
             </>
         );
     };

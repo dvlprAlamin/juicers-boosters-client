@@ -6,6 +6,7 @@ import { GetContext } from '../context';
 import Loader from './Loader';
 
 const Home = () => {
+    
     const {setCheckoutJuiceId} = GetContext();
     const [juices, setJuices] = useState([]);
     const [loading , setLoading] = useState(true);

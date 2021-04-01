@@ -1,5 +1,4 @@
 import React from 'react';
-import Admin from './Admin';
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,21 +11,48 @@ import Navigation from './Navigation';
 import Orders from './Orders';
 import { ContextProvider } from '../context';
 import Checkout from './Checkout';
+import Login from './Login';
+import PrivateRoute from './PrivateRoute';
+import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: 'Poppins , sans-serif',
+  },
+  overrides: {
+    // MuiCssBaseline: {
+    //   '@global': {
+    //     '@font-face': [Poppins],
+    //   },
+    // },
+  },
+});
 const App = () => {
   return (
     <div style={{marginTop:100}}>
+      <ThemeProvider theme={theme}>
+      <CssBaseline/>
       <ContextProvider>
       <Router>
         <Navigation/>
         <Switch>
           <Route exact path="/" component={Home}/>
-          <Route path="/orders" component={Orders}/>
-          <Route path="/checkout" component={Checkout}/>
-          <Route path='/addProduct' component={AddProduct}/>
-          <Route path='/manageProduct' component={ManageProduct}/>
+          <Route path="/login" component={Login}/>
+          <PrivateRoute path="/orders">
+            <Orders />
+          </PrivateRoute>
+          <PrivateRoute path="/checkout">
+            <Checkout />
+          </PrivateRoute>
+          <PrivateRoute path="/addProduct">
+            <AddProduct />
+          </PrivateRoute>
+          <PrivateRoute path="/manageProduct">
+            <ManageProduct />
+          </PrivateRoute>
         </Switch>
       </Router>
       </ContextProvider>
+      </ThemeProvider>
     </div>
   );
 };
