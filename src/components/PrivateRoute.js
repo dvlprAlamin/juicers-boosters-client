@@ -3,7 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { GetContext } from '../context';
 
 const PrivateRoute = ({ children, ...rest }) => {
-    const {loggedInUser} = GetContext();
+    const { loggedInUser } = GetContext();
     return (
         <Route
             {...rest}
@@ -11,13 +11,13 @@ const PrivateRoute = ({ children, ...rest }) => {
                 loggedInUser ? (
                     children
                 ) : (
-                        <Redirect
-                            to={{
-                                pathname: "/login",
-                                state: { from: location }
-                            }}
-                        />
-                    )
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: location }
+                        }}
+                    />
+                )
             }
         />
     );

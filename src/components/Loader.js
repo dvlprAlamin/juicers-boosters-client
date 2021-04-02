@@ -4,16 +4,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles({
   root: {
-    position:'fixed',
-    top:'50vh',
-    left:'50%',
-    transform:'translateX(-50%)'
+    position: 'fixed',
+    top: '50vh',
+    left: '50%',
+    transform: 'translateX(-50%)'
   },
 });
 
-const Loader = ()=> {
+const Loader = () => {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <CircularProgress />

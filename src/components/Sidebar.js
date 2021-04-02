@@ -13,7 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { Link } from "react-router-dom";
 
 const drawerWidth = 200;
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     padding: '.8rem 0',
-    paddingLeft:'10%',
+    paddingLeft: '10%',
     opacity: '.8',
     transition: '.3s linear',
     borderRight: '4px solid transparent',
@@ -45,15 +45,15 @@ const useStyles = makeStyles((theme) => ({
   },
   navIcon: {
     color: theme.palette.primary.main,
-    marginRight:10,
+    marginRight: 10,
   },
   navLogoText: {
     color: theme.palette.primary.main,
     textAlign: 'center',
-    margin:'1rem .3rem'
+    margin: '1rem .3rem'
   },
   logoImg: {
-    padding:'1rem',
+    padding: '1rem',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
@@ -70,9 +70,9 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
       display: 'none',
     },
-    background:theme.palette.primary.main,
-    top:48,
-    boxShadow:'none'
+    background: theme.palette.primary.main,
+    top: 48,
+    boxShadow: 'none'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -146,15 +146,14 @@ const Sidebar = props => {
             onClick={handleDrawerToggle}
             className={classes.menuButton}
           >
-            <Typography variant="h6">
-            Admin Panel
+            <MenuIcon />
+            <Typography variant="h6" style={{ marginLeft: 15 }}>
+              Admin Panel
         </Typography>
-        {/* <MenuIcon /> */}
           </IconButton>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden mdUp implementation="css">
           <Drawer
             container={container}

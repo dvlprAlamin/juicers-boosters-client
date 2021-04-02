@@ -1,5 +1,3 @@
-// import { faBars } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuIcon from '@material-ui/icons/Menu';
 import {
     AppBar,
@@ -13,7 +11,7 @@ import {
     MenuItem,
     Avatar,
 } from "@material-ui/core";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { GetContext } from '../context';
 
@@ -38,7 +36,7 @@ const headersData = [
 
 const useStyles = makeStyles(() => ({
     menuButton: {
-        marginRight:30
+        marginRight: 30
     },
     toolbar: {
         display: "flex",
@@ -47,33 +45,32 @@ const useStyles = makeStyles(() => ({
     drawerContainer: {
         padding: "20px 30px",
     },
-    loginBtn:{
-        textDecoration:'none',
-        color:'inherit'
+    loginBtn: {
+        textDecoration: 'none',
+        color: 'inherit'
     },
-    logoutBtn:{
-        textDecoration:'none',
-        color:'inherit',
-        marginRight:40
+    logoutBtn: {
+        textDecoration: 'none',
+        color: 'inherit',
+        marginRight: 40
     },
-    userAvatar:{
-        position:'absolute',
-        top:12,
-        right:12
+    userAvatar: {
+        position: 'absolute',
+        top: 12,
+        right: 12
     }
 }));
 
 export default function Navigation() {
-    const {loggedInUser , logOut} = GetContext();
+    const { loggedInUser, logOut } = GetContext();
     const logOutHandler = async e => {
         try {
             await logOut();
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
-    // console.log(loggedInUser);
-    const { menuButton, toolbar, drawerContainer,loginBtn,logoutBtn,userAvatar } = useStyles();
+    const { menuButton, toolbar, drawerContainer, loginBtn, logoutBtn, userAvatar } = useStyles();
 
     const [state, setState] = useState({
         mobileView: false,
@@ -121,7 +118,7 @@ export default function Navigation() {
                     }}
                 >
                     <MenuIcon />
-          </IconButton>
+                </IconButton>
 
                 <Drawer
                     {...{
@@ -154,19 +151,19 @@ export default function Navigation() {
                         >
                             <MenuItem>{label}</MenuItem>
                         </Link>)}
-                        
-                {loggedInUser && 
-                <Avatar alt={loggedInUser.displayName} src={loggedInUser.photoURL} />}
-                {loggedInUser ? 
-                <RouterLink 
-                onClick={logOutHandler}
-                className={logoutBtn} 
-                to="/login">
-              <Button variant="outlined" color="inherit">
-                Logout</Button></RouterLink> :
-            <RouterLink className={loginBtn} to="/login">
-              <Button variant="outlined" color="inherit">
-                Login</Button></RouterLink>}
+
+                {loggedInUser &&
+                    <Avatar alt={loggedInUser.displayName} src={loggedInUser.photoURL} />}
+                {loggedInUser ?
+                    <RouterLink
+                        onClick={logOutHandler}
+                        className={logoutBtn}
+                        to="/login">
+                        <Button variant="outlined" color="inherit">
+                            Logout</Button></RouterLink> :
+                    <RouterLink className={loginBtn} to="/login">
+                        <Button variant="outlined" color="inherit">
+                            Login</Button></RouterLink>}
             </>
         )
     };
@@ -193,17 +190,17 @@ export default function Navigation() {
                         {label}
                     </Button>
                 ))}
-                {loggedInUser && 
-                <Avatar className={userAvatar} alt={loggedInUser.displayName} src={loggedInUser.photoURL} />}
-                {loggedInUser ? 
-                <RouterLink 
-                onClick={logOutHandler}
-                className={logoutBtn} to="/login">
-              <Button variant="outlined" color="inherit">
-                Logout</Button></RouterLink> :
-            <RouterLink className={loginBtn} to="/login">
-              <Button variant="outlined" color="inherit">
-                Login</Button></RouterLink>}
+                {loggedInUser &&
+                    <Avatar className={userAvatar} alt={loggedInUser.displayName} src={loggedInUser.photoURL} />}
+                {loggedInUser ?
+                    <RouterLink
+                        onClick={logOutHandler}
+                        className={logoutBtn} to="/login">
+                        <Button variant="outlined" color="inherit">
+                            Logout</Button></RouterLink> :
+                    <RouterLink className={loginBtn} to="/login">
+                        <Button variant="outlined" color="inherit">
+                            Login</Button></RouterLink>}
             </>
         );
     };

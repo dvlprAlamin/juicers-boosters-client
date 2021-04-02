@@ -6,11 +6,11 @@ import ManageProduct from './ManageProduct';
 const Admin = () => {
     return (
         <>
-        <Sidebar/>
-        <div style={{paddingLeft:200}}>
-            <Route path='/addProduct' component={AddProduct} />
-            <Route path='/manageProduct' component={ManageProduct} />
-        </div>
+            <Sidebar />
+            <div style={{ paddingLeft: 200 }}>
+                <Route path='/addProduct' component={AddProduct} />
+                <Route path='/manageProduct' component={ManageProduct} />
+            </div>
         </>
     );
 };

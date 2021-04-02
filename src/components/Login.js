@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Paper } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router';
-import { Link } from 'react-router-dom';
 import { GetContext } from '../context';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,11 +38,8 @@ const Login = () => {
     const { login,googleSignIn } = GetContext();
     const history = useHistory();
     const location = useLocation();
-    const { pathname } = location;
     const { from } = location.state || { from: { pathname: "/" } };
     const [user, setUser] = useState({})
-    const [error, setError] = useState('')
-    const [loading, setLoading] = useState(false)
     const onBlurHandler = (e) => {
         const newUser = { ...user };
         newUser[e.target.name] = e.target.value;
@@ -52,25 +48,19 @@ const Login = () => {
     const loginHandler = async e => {
         e.preventDefault();
         try {
-            setError('')
-            setLoading(true)
             await login(user.email, user.password)
             history.replace(from)
-        } catch {
-            setError('Failed to login')
+        } catch(err) {
+            console.log(err);
         }
-        setLoading(false)
     }
     const googleSignInHandler = async e => {
         try {
-            setError('');
-            setLoading(true);
             await googleSignIn();
             history.replace(from);
-        } catch {
-            setError('Sign in failed');
+        } catch(err){
+            console.log(err);
         }
-        setLoading(false)
     }
     return (
         <Container component="main" maxWidth="xs">
