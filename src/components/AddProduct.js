@@ -14,15 +14,16 @@ const useStyles = makeStyles((theme) => ({
   },
   fieldItem:{
     width:'100%',
-    padding:10,
-    margin:'10px 0',
+    padding:'1vmax',
+    // margin:'10px 0',
     border:'1px solid',
     borderColor:theme.palette.primary.main,
-    borderRadius:3
+    borderRadius:3,
+    fontSize:'calc(1vmax + 5px)'
   },
   fieldLabel:{
     color:theme.palette.primary.main,
-    fontSize:20,
+    fontSize:'calc(1vmax + 10px)',
     fontWeight:700
   }
 }))
@@ -50,6 +51,7 @@ const AddProduct = () => {
   const onSubmit = (data, e) => {
     const juiceData = {
       name: data.name,
+      ingredient:data.ingredient,
       price: data.price,
       imageURL: imageURL
     }
@@ -69,17 +71,22 @@ const AddProduct = () => {
     <>
       <Sidebar />
       <Container className={root}>
-        <Paper style={{maxWidth:500, margin:'2rem auto',padding:20}}>
+        <Paper style={{maxWidth:1000, margin:'2rem auto',padding:20}}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
+          <Grid container spacing={2}>
+          <Grid item sm={6} xs={12}>
             <label className={fieldLabel} htmlFor="name">Juice Name</label>
             <input className={fieldItem} name="name" placeholder="Enter Name" ref={register} />
-          </div>
-          <div>
+          </Grid>
+          <Grid item sm={6} xs={12}>
             <label className={fieldLabel} htmlFor="price">Juice Price</label>
             <input className={fieldItem} name="price" placeholder="Enter Price" ref={register} />
-          </div>
-          <div>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <label className={fieldLabel} htmlFor="price">Main Ingredient</label>
+            <input className={fieldItem} name="ingredient" placeholder="Enter Ingredient" ref={register} />
+          </Grid>
+          <Grid item sm={6} xs={12}>
             <label className={fieldLabel} htmlFor="imageURL">Add Photo</label>
             <input className={fieldItem} type="file" name="imageURL" 
             onChange={(e)=> {
@@ -87,8 +94,9 @@ const AddProduct = () => {
             setLoading(true);
             }} />
             {loading && <Loader/>}
-          </div>
-          <Button type="submit" disabled={loading} variant="contained" color="primary">Save</Button>
+          </Grid>
+          </Grid>
+          <Button type="submit" disabled={loading} variant="contained" color="primary" style={{fontSize:'calc(1vmax + 5px)',marginTop:10}}>Save</Button>
           {loading && <Loader/>}
         </form>
         </Paper>

@@ -1,51 +1,70 @@
-import { Container, makeStyles, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Container, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { GetContext } from '../context';
+import Loader from './Loader';
 const useStyles = makeStyles((theme) => ({
     tableHeading: {
-        fontWeight:700,
-        fontSize:20,
-        color:theme.palette.primary.main
+        fontSize: 'calc(1vmax + 10px)',
+        color: theme.palette.primary.main,
+    },
+    tableBody:{
+        fontSize: 'calc(1vmax + 5px)'
+    },
+    table:{
+        '@media(max-width:500px)':{
+        }
     }
 }));
 const Orders = () => {
-    const {tableHeading} = useStyles();
+    const { tableHeading, tableBody } = useStyles();
     const { loggedInUser } = GetContext();
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         axios.get(`https://banana-tart-95567.herokuapp.com/orders?email=${loggedInUser.email}`)
             .then(res => {
                 setOrders(res.data);
+                setLoading(false)
             })
-    }, [loggedInUser])
+    }, [loggedInUser]);
+    const totalOrderPrice = orders.reduce((price, order) => price + (+order.price), 0)
     return (
         <Container>
-            <Typography style={{marginBottom:30}} variant="h4">Orders</Typography>
+            {loading ? <Loader/>: 
+            <>
+                <Typography style={{ marginBottom: 30, fontSize:'calc(1vmax + 20px)' }} variant="h4">Orders</Typography>
             {orders.length > 0 ?
-                <Table component={Paper}>
-                <TableHead>
-                    <TableRow>
-                        <TableCell className={tableHeading}>Juice Name</TableCell>
-                        <TableCell className={tableHeading} align="center">Quantity</TableCell>
-                        <TableCell className={tableHeading} align="right">Price</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        orders.map(order => <TableRow key={order._id}>
-                            <TableCell component="th" scope="row">
-                                {order.name}
-                            </TableCell>
-                            <TableCell align="center">{order.quantity}</TableCell>
-                            <TableCell align="right">${order.price}</TableCell>
-                            {/* <TableCell align="right"> </TableCell> */}
-                        </TableRow>)
-                    }
-                </TableBody>
-            </Table>:
-            <Typography variant="h5">You didn't place any order yet.</Typography>}
-
+            <TableContainer  component={Paper} >
+                <Table>
+                    <TableHead>
+                        <TableRow >
+                            <TableCell className={tableHeading}>Juice Name</TableCell>
+                            <TableCell className={tableHeading} align="center">Ingredient</TableCell>
+                            <TableCell className={tableHeading} align="center">Quantity</TableCell>
+                            <TableCell className={tableHeading} align="right">Price</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            orders.map(order => 
+                            <TableRow key={order._id}>
+                                <TableCell className={tableBody}>{order.name}</TableCell>
+                                <TableCell className={tableBody} align="center">{order.ingredient}</TableCell>
+                                <TableCell className={tableBody} align="center">{order.quantity}</TableCell>
+                                <TableCell className={tableBody} align="right">${order.price}</TableCell>
+                            </TableRow>)
+                        }
+                        <TableRow>
+                            <TableCell colSpan="2" className={tableHeading} align="center">Total</TableCell>
+                            <TableCell className={tableHeading} align="center">{orders.length}</TableCell>
+                            <TableCell className={tableHeading} align="right">${totalOrderPrice}</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+                </TableContainer> :
+                <Typography variant="h5">You didn't place any order yet.</Typography>}
+            </>}
         </Container>
     );
 };

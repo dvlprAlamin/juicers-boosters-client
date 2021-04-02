@@ -1,7 +1,9 @@
 import { Button, Container, makeStyles, Table, TableBody, TableCell, TableHead, Typography } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { GetContext } from '../context';
+import Loader from './Loader';
 const useStyles = makeStyles((theme) => ({
     tableHeading: {
         fontWeight:700,
@@ -14,11 +16,13 @@ const Checkout = () => {
     const {checkoutJuiceId, loggedInUser} = GetContext();
     console.log(checkoutJuiceId);
     const [checkoutJuice, setCheckoutJuice] = useState({})
+    const [loading, setLoading] = useState(true)
     useEffect(()=> {
         axios.get(`https://banana-tart-95567.herokuapp.com/juices/${checkoutJuiceId}`)
             .then(res=> {
                 // console.log(res.data[0]);
                 setCheckoutJuice(res.data[0])
+                setLoading(false)
             })
             .catch(err=> {
                 console.log(err);
@@ -28,6 +32,7 @@ const Checkout = () => {
     const checkoutHandler = () => {
         const orderData = {
             email:loggedInUser.email,
+            ingredient:checkoutJuice.ingredient,
             name:checkoutJuice.name,
             quantity:1,
             price:checkoutJuice.price,
@@ -44,10 +49,9 @@ const Checkout = () => {
     }
     return (
         <Container>
-            
-            <Typography variant="h4" style={{marginBottom:25}}>Checkout</Typography>
-            {/* {<h2>Name: {checkoutJuice.name}</h2>} */}
-            {/* {<h2>Price: ${checkoutJuice.price}</h2>} */}
+            {loading? <Loader/>:
+            <>
+                <Typography variant="h4" style={{marginBottom:25}}>Checkout</Typography>
             <Table>
                 <TableHead>
                     <TableCell className={tableHeading}>Juice Name</TableCell>
@@ -61,8 +65,9 @@ const Checkout = () => {
                 </TableBody>
             </Table>
             <div style={{textAlign:'right', marginTop:30}}>
-            <Button onClick={checkoutHandler} variant="contained" color="primary" >Checkout</Button>
+            <Button component={Link} to='/orders' onClick={checkoutHandler} variant="contained" color="primary" >Checkout</Button>
             </div>
+            </>}
         </Container>
     );
 };

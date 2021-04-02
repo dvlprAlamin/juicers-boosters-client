@@ -26,7 +26,7 @@ const Home = () => {
             <Grid container spacing={5} justify="center">
                 {   loading ? <Loader /> :
                     juices.map(juice => (
-                        <Grid item lg={4} md={6} sm={12} key={juice._id} >
+                        <Grid item md={4} sm={6} xs={12} key={juice._id} >
                             <Paper style={{maxWidth:300 , margin:'auto',overflow:'hidden'}}>
                                 <img style={{maxWidth:300}} src={juice.imageURL} alt=""/>
                                 <Typography variant="h5" align="center">{juice.name}</Typography>
