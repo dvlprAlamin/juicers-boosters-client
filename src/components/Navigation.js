@@ -15,24 +15,6 @@ import React, { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { GetContext } from '../context';
 
-const headersData = [
-    {
-        label: "Home",
-        href: "/",
-    },
-    {
-        label: "Orders",
-        href: "/orders",
-    },
-    {
-        label: "Admin",
-        href: "/addProduct",
-    },
-    {
-        label: "Deals",
-        href: "#",
-    },
-];
 
 const useStyles = makeStyles(() => ({
     menuButton: {
@@ -61,8 +43,29 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-export default function Navigation() {
+export default function Navigation({ isAdmin }) {
     const { loggedInUser, logOut } = GetContext();
+    let headersData = [
+        {
+            label: "Home",
+            href: "/",
+        },
+        {
+            label: "Orders",
+            href: "/orders",
+        },
+        {
+            label: "Deals",
+            href: "#",
+        },
+    ];
+
+    if (isAdmin) {
+        headersData.push({
+            label: "Admin",
+            href: "/addProduct",
+        })
+    }
     const logOutHandler = async e => {
         try {
             await logOut();

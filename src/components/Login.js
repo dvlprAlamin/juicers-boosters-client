@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import { Paper } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router';
 import { GetContext } from '../context';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,9 +36,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
     const classes = useStyles();
-    const { login,googleSignIn } = GetContext();
+    const { signup, login, googleSignIn } = GetContext();
     const history = useHistory();
     const location = useLocation();
+    const { pathname } = location;
     const { from } = location.state || { from: { pathname: "/" } };
     const [user, setUser] = useState({})
     const onBlurHandler = (e) => {
@@ -50,7 +52,16 @@ const Login = () => {
         try {
             await login(user.email, user.password)
             history.replace(from)
-        } catch(err) {
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    const signupHandler = async e => {
+        e.preventDefault();
+        try {
+            await signup(user.email, user.password)
+            history.replace(from)
+        } catch (err) {
             console.log(err);
         }
     }
@@ -58,7 +69,7 @@ const Login = () => {
         try {
             await googleSignIn();
             history.replace(from);
-        } catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
@@ -69,8 +80,8 @@ const Login = () => {
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
                     </Avatar>
-                    <Typography component="h1" variant="h5">Log in</Typography>
-                    <form className={classes.form} noValidate>
+                    <Typography component="h1" variant="h5">{pathname === '/login' ? 'Log in' : 'Sign up'}</Typography>
+                    <form className={classes.form}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -98,23 +109,39 @@ const Login = () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControlLabel
+                                {pathname === '/login' ? <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" />}
                                     label="Remember me"
-                                />
+                                /> : <FormControlLabel
+                                    control={<Checkbox value="terms" color="primary" />}
+                                    label="I accept terms and condition"
+                                />}
                             </Grid>
                         </Grid>
+                        {pathname === '/login' ? <Button
+                            onClick={loginHandler}
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Log In
+                            </Button> :
                             <Button
-                                onClick={loginHandler}
+                                onClick={signupHandler}
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Log In
-                            </Button>
+                                Sign up
+                            </Button>}
                     </form>
+                    {pathname === '/login' ?
+                        <Typography>Need an account <Link to='/signup'>Signup</Link></Typography> :
+                        <Typography>Already have an account <Link to='/login'>Login</Link></Typography>}
                     <Typography>Or</Typography>
                     <Button onClick={googleSignInHandler} variant="outlined" color="primary">
                         Continue with Google

@@ -43,6 +43,8 @@ const Orders = () => {
                                         <TableCell className={tableHeading} align="center">Ingredient</TableCell>
                                         <TableCell className={tableHeading} align="center">Quantity</TableCell>
                                         <TableCell className={tableHeading} align="right">Price</TableCell>
+                                        <TableCell className={tableHeading} align="right">Order Date</TableCell>
+                                        <TableCell className={tableHeading} align="right">Order Time</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -53,6 +55,8 @@ const Orders = () => {
                                                 <TableCell className={tableBody} align="center">{order.ingredient}</TableCell>
                                                 <TableCell className={tableBody} align="center">{order.quantity}</TableCell>
                                                 <TableCell className={tableBody} align="right">${order.price}</TableCell>
+                                                <TableCell className={tableBody} align="right">{new Date(order.date).toDateString('dd/MM/yyyy')}</TableCell>
+                                                <TableCell className={tableBody} align="right">{new Date(order.date).toLocaleTimeString()}</TableCell>
                                             </TableRow>)
                                     }
                                     <TableRow>
